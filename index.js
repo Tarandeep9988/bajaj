@@ -9,10 +9,16 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const OFFICIAL_EMAIL = process.env.OFFICIAL_EMAIL;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL;
 
 if (!OFFICIAL_EMAIL) {
   console.error("OFFICIAL_EMAIL is required but not set.");
+  process.exit(1);
+}
+
+if (!GEMINI_API_KEY) {
+  console.error("GEMINI_API_KEY is required but not set.");
   process.exit(1);
 }
 
@@ -28,11 +34,7 @@ app.use(
   })
 );
 
-const aiClient = (() => {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) return null;
-  return new GoogleGenerativeAI(key);
-})();
+const aiClient = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const sendSuccess = (res, data) => {
   res.status(200).json({
