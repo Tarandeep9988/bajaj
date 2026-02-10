@@ -8,9 +8,13 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const OFFICIAL_EMAIL =
-  process.env.OFFICIAL_EMAIL || "tarandeep2228.be23@chitkara.edu.in";
+const OFFICIAL_EMAIL = process.env.OFFICIAL_EMAIL;
 const GEMINI_MODEL = process.env.GEMINI_MODEL;
+
+if (!OFFICIAL_EMAIL) {
+  console.error("OFFICIAL_EMAIL is required but not set.");
+  process.exit(1);
+}
 
 app.use(helmet());
 app.use(cors({ origin: "*" }));
